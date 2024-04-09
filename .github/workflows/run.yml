@@ -1,9 +1,9 @@
 name: comac-recruit-info-spider
 
 on:
-  push:
-    branches:
-      - master
+  schedule:
+    # Runs at 09:00 UTC, which is 17:00 UTC+8 (Beijing) every 10 days
+    - cron: '0 9 */10 * *'
   workflow_dispatch:
 
 jobs:
@@ -24,14 +24,6 @@ jobs:
           myToken: ${{ secrets.GITHUB_TOKEN }}
           exclude_types: "draft|prerelease"  # Exclude drafts and prereleases
           view_top: 1  # Number of latest releases to fetch
-
-      - name: Test Upload files to Release
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: main.py
-          tag: ${{ steps.get-latest-release.outputs.tag_name }}
-          overwrite: true
 
       - name: Set up Python 3.10
         uses: actions/setup-python@v2
