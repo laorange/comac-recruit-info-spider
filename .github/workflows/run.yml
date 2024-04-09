@@ -10,6 +10,10 @@ jobs:
   run-spider:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write  # Necessary for uploading to releases
+      actions: read
+
     steps:
       - uses: actions/checkout@v2
 
