@@ -17,12 +17,20 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Get latest release
+        id: get-latest-release
+        uses: InsonusK/get-latest-release@v1.1.0
+        with:
+          myToken: ${{ secrets.GITHUB_TOKEN }}
+          exclude_types: "draft|prerelease"  # Exclude drafts and prereleases
+          view_top: 1  # Number of latest releases to fetch
+
       - name: Test Upload files to Release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: main.py
-          tag: ${{ github.ref }}
+          tag: ${{ steps.get-latest-release.outputs.tag_name }}
           overwrite: true
 
       - name: Set up Python 3.10
@@ -49,5 +57,5 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file_glob: true
           file: outputs/*
-          tag: ${{ github.ref }}
+          tag: ${{ steps.get-latest-release.outputs.tag_name }}
           overwrite: true
