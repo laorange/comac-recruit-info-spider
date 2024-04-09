@@ -13,6 +13,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Test Upload files to Release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: main.py
+          tag: ${{ github.ref }}
+          overwrite: true
+
       - name: Set up Python 3.10
         uses: actions/setup-python@v2
         with:
@@ -36,6 +44,6 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file_glob: true
-          file: output/*
+          file: outputs/*
           tag: ${{ github.ref }}
           overwrite: true
